@@ -1,6 +1,6 @@
 @kctf_service_HostAddress = http://localhost:5103
 
-GET {{kctf_service_HostAddress}}/weatherforecast/
+GET {{kctf_service_HostAddress}}/kctf_service/
 Accept: application/json
 
 ###
