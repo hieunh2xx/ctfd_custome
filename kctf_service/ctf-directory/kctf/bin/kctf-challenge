@@ -161,7 +161,7 @@ function build_images {
 }
 
 function push_image {
-  IMAGE_NAME=$1
+  IMAGE_TAG=$1
   IMAGE_ID=$2
 
   case "${CLUSTER_TYPE}" in
@@ -171,7 +171,7 @@ function push_image {
       docker push "${IMAGE_URL}" || return
       ;;
     kind)
-      IMAGE_URL="kind/${IMAGE_NAME}:${IMAGE_ID}"
+      IMAGE_URL="kind/${CHALLENGE_NAME}:${IMAGE_TAG}"
       docker tag "${IMAGE_ID}" "${IMAGE_URL}" || return
       "${KCTF_BIN}/kind" load docker-image --name "${CLUSTER_NAME}" "${IMAGE_URL}" || return
       ;;
