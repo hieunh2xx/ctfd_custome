@@ -7,7 +7,7 @@ app = Flask(__name__)
 db_config = {
     'host': 'localhost',
     'user': 'dbuser',
-    'password': '123',  # Thay đổi mật khẩu tương ứng
+    'password': '123', 
     'database': 'testdb'
 }
 
@@ -33,4 +33,4 @@ def add_data():
     return jsonify({"message": "Data added!"}), 201
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=1337)
