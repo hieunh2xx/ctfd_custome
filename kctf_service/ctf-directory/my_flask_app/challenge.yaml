@@ -13,4 +13,4 @@ spec:
   healthcheck:
     # TIP: disable the healthcheck during development
     enabled: false
-  image: kind/challenge:a610b9cb6ea6b552848264453d09c7775dede16db51c93b4cc8426242a5bf364
+  image: kind/my-flask-app:challenge

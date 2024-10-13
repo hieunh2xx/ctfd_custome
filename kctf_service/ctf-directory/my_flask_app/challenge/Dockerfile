@@ -26,17 +26,10 @@ COPY --from=web-chroot /usr/src/web-app /web-app
 RUN mkdir -p /var/lib/mysql /var/run/mysqld && \
     chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
 
-# Tạo cơ sở dữ liệu
-# It's better to use a separate script to initialize MySQL
-COPY init_db.sql /tmp/init_db.sql
-
-RUN service mysql start && \
-    mysql < /tmp/init_db.sql
-
 RUN pip install --no-cache-dir -r /web-app/requirements.txt
 
-EXPOSE 5000
+#EXPOSE 5000
 
 # CMD để khởi động cả ứng dụng web và dịch vụ cơ sở dữ liệu
-# CMD service mysql start && python3 /web-app/app.py
-CMD (kctf_drop_privs nsjail --config /web-app/web-servers.nsjail.cfg --port 5000 -- python3 /web-app/app.py  )
+CMD (kctf_drop_privs nsjail --config /web-app/web-servers.nsjail.cfg --port 1337 -- \
+     bash -c "service mysql start && mysql < /webapp/init_db.sql && python3 /web-app/app.py")
