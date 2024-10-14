@@ -4,4 +4,4 @@
 (&>/dev/null node /web-apps/nodejs/app.js)&
 
 # Proxy stdin/stdout to web server
-socat - TCP:127.0.0.1:8080,forever
+socat - TCP:0.0.0.1:8080,forever

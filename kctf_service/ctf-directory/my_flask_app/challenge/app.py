@@ -7,19 +7,19 @@ app = Flask(__name__)
 db_config = {
     'host': 'localhost',
     'user': 'dbuser',
-    'password': '123',  # Thay đổi mật khẩu tương ứng
+    'password': '123', 
     'database': 'testdb'
 }
 
 @app.route('/', methods=['GET'])
 def get_data():
-    conn = mysql.connector.connect(**db_config)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM sample_table;")
-    rows = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return jsonify(rows)
+    # conn = mysql.connector.connect(**db_config)
+    # cursor = conn.cursor()
+    # cursor.execute("SELECT * FROM sample_table;")
+    # rows = cursor.fetchall()
+    # cursor.close()
+    # conn.close()
+    return "test"
 
 @app.route('/', methods=['POST'])
 def add_data():
@@ -33,4 +33,4 @@ def add_data():
     return jsonify({"message": "Data added!"}), 201
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=1337)
