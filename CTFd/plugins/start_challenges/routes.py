@@ -33,7 +33,7 @@ def start_challenge(challenge_Id):
         # If not deployed, generate a new docker_image and create a new deployment
         docker_image = f"challenge_image_{challenge_Id}_{user_Id}"
 
-        deployment_name = f"challenge-{challenge_Id}-{user_Id}"
+        deployment_name = f"challenge-{challenge_Id}"
 
         container = client.V1Container(
             name=deployment_name,
@@ -75,6 +75,7 @@ def start_challenge(challenge_Id):
             deployment_name= deployment_name
             )
         db.session.add(new_deployment)
+        challenge.connection_info = f"http://{deployment_name}.ctfd.local"
         db.session.commit()
 
         challenge_url = f"http://{deployment_name}.ctfd.local"
@@ -89,8 +90,8 @@ def start_challenge(challenge_Id):
         docker_image = deployed_challenge.docker_image
         deployment_name = deployed_challenge.deployment_name
 
-    # Generate the challenge URL
-    challenge_url = f"http://{deployment_name}.ctfd.local"
+    # Fetch url dang co trong db
+    challenge_url = challenge.connection_info
 
     return jsonify({"success": True, "message": "Challenge started", "challenge_url": challenge_url}), 200
 
