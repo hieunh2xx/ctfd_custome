@@ -47,14 +47,14 @@
               </h3>
 
               <!-- Điều kiện kiểm tra trạng thái `challenge.state` -->
-              {% if challenge.state == 'visible' %}
+              {% if challenge.isStart == True %}
               <form method="POST" action="{{ url_for('challenge.view_challenge', challenge_id=challenge.id) }}">
                 <input type="hidden" name="action" value="stop">
                 <button type="submit" class="btn btn-danger">
                   {% trans %}Stop Challenge{% endtrans %}
                 </button>
               </form>
-              {% elif challenge.state == 'solved' %}
+              {% elif challenge.isStart == False %}
               <p>{% trans %}This challenge has been solved{% endtrans %}</p>
               {% else %}
               <form method="POST" action="{{ url_for('challenge.view_challenge', challenge_id=challenge.id) }}">
