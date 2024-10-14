@@ -75,6 +75,16 @@ class Notifications(db.Model):
         super(Notifications, self).__init__(**kwargs)
 
 
+class deploy_challenge(db.Model):
+    __tablename__ = "deploy_challenge"
+    id = db.Column(db.Integer, primary_key=True)
+    challenge_id = db.Column(db.Integer)
+    deploy_state = db.Column(db.String(50))
+    image_name = db.Column(db.String(128), unique=True)
+    time_limit = db.Column(db.DateTime)
+    last_update = db.Column(db.DateTime)
+
+
 class Pages(db.Model):
     __tablename__ = "pages"
     id = db.Column(db.Integer, primary_key=True)
@@ -120,6 +130,9 @@ class Challenges(db.Model):
     type = db.Column(db.String(80))
     state = db.Column(db.String(80), nullable=False, default="visible")
     requirements = db.Column(db.JSON)
+    IsStart = db.Column(db.Boolean, default=False)
+    # time_limit = db.Column(db.Integer, nullable=True, default=60)  # Existing column
+    # require_deploy = db.Column(db.Boolean, nullable=False, default=False)
 
     files = db.relationship("ChallengeFiles", backref="challenge")
     tags = db.relationship("Tags", backref="challenge")

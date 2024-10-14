@@ -1,4 +1,14 @@
 {% block header %}
+<script>
+	function toggleDockerSetup(checkbox) {
+		const dockerSetupDiv = document.getElementById('docker-setup');
+		if (checkbox.checked) {
+			dockerSetupDiv.style.display = 'block';
+		} else {
+			dockerSetupDiv.style.display = 'none';
+		}
+	}
+</script>
 {% endblock %}
 
 <form method="POST" action="{{ script_root }}/admin/challenges/new" enctype="multipart/form-data">
@@ -25,7 +35,6 @@
 		<input type="text" class="form-control" name="category" placeholder="Enter challenge category">
 	</div>
 	{% endblock %}
-
 
 	{% block message %}
 	<div class="form-group">
@@ -58,6 +67,27 @@
 	{% block type %}
 	<input type="hidden" name="type" value="standard">
 	{% endblock %}
+
+	<!-- Checkbox for Setup Docker -->
+	<div class="form-group">
+		<label>
+			<input type="checkbox" name="setup_docker" id="setup_docker" onclick="toggleDockerSetup(this)">
+			Setup Docker
+		</label>
+	</div>
+
+	<!-- Docker Setup Input -->
+	<div id="docker-setup" style="display: none;">
+		<div class="form-group">
+			<label>
+				Docker Image Name:<br>
+				<small class="form-text text-muted">
+					Enter the name of the Docker image to be used.
+				</small>
+			</label>
+			<input type="text" class="form-control" name="docker_image" placeholder="Enter Docker image name">
+		</div>
+	</div>
 
 	{% block submit %}
 	<div class="form-group">

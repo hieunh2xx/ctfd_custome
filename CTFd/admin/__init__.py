@@ -26,6 +26,7 @@ from CTFd.admin import statistics  # noqa: F401,I001
 from CTFd.admin import submissions  # noqa: F401,I001
 from CTFd.admin import teams  # noqa: F401,I001
 from CTFd.admin import users  # noqa: F401,I001
+from CTFd.admin import Ticket
 from CTFd.cache import (
     cache,
     clear_all_team_sessions,
