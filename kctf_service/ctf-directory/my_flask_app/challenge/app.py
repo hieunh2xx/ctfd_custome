@@ -13,13 +13,13 @@ db_config = {
 
 @app.route('/', methods=['GET'])
 def get_data():
-    conn = mysql.connector.connect(**db_config)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM sample_table;")
-    rows = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return jsonify(rows)
+    # conn = mysql.connector.connect(**db_config)
+    # cursor = conn.cursor()
+    # cursor.execute("SELECT * FROM sample_table;")
+    # rows = cursor.fetchall()
+    # cursor.close()
+    # conn.close()
+    return "test"
 
 @app.route('/', methods=['POST'])
 def add_data():
