@@ -59,6 +59,10 @@ class BaseChallenge(object):
             "state": challenge.state,
             "max_attempts": challenge.max_attempts,
             "type": challenge.type,
+<<<<<<< Updated upstream
+=======
+            
+>>>>>>> Stashed changes
             "type_data": {
                 "id": cls.id,
                 "name": cls.name,
