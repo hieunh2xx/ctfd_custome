@@ -60,7 +60,7 @@ class BaseChallenge(object):
             "max_attempts": challenge.max_attempts,
             "type": challenge.type,
             "hints": [hint.content for hint in challenge.hints],
-            "docker_image": [deployed_challenge.image_name in challenge.image_name],
+           
             "type_data": {
                 "id": cls.id,
                 "name": cls.name,

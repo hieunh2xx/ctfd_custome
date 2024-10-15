@@ -3,6 +3,9 @@ from kubernetes import client, config
 from CTFd.models import Challenges, DeployedChallenge, db
 from datetime import datetime
 import logging
+from flask_cors import CORS # type: ignore
+import requests
+
 
 logging.basicConfig(level=logging.INFO,  # Set to INFO level
                     format='%(asctime)s - %(levelname)s - %(message)s')
@@ -12,10 +15,24 @@ logging.basicConfig(level=logging.INFO,  # Set to INFO level
 
 start_challenge_api = Blueprint('start_challenge_api', __name__, url_prefix='/api/v1')
 
+
 @start_challenge_api.route('/start_challenge/<int:challenge_id>', methods=['POST'])
 def start_challenge(challenge_id):
     user_Id= request.json.get("user_id")
 
+
+    url = "http://localhost:4000/api/KCTF/startchallenge/web_chal_demo"
+
+    payload = {}
+    headers = {
+    'Cookie': 'session=aaa132d6-048d-4886-b95b-2212a1666f85.ro2nbzwi0J-8qMm26qaqLoSsAeg'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    res__data =response.json
+
+    print("DA LIKUJMNHBGVFGAHJUKILO;LIKUJYHTGHTYJUIKO9POL;P[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]")
     #config.load_kube_config() 
     if not user_Id:
         logging.warning(f"User attempted to start challenge {challenge_id} without being logged in.")
@@ -81,7 +98,6 @@ def start_challenge(challenge_id):
         db.session.commit()
 
         challenge_url = f"http://{deployment_name}.ctfd.local"
-
         logging.info(f"User {user_Id} started challenge {challenge_id}. Deployment created: {deployment_name}.")
 
         return jsonify({"success": True, "message": "Challenge started", "challenge_url": challenge_url}), 200
@@ -89,13 +105,12 @@ def start_challenge(challenge_id):
 #when users restart instance, uses existing one
     else:
         logging.info(f"User {user_Id} is using an existing deployment for challenge {challenge_id}.")
-
         # If already deployed, use the existing deployment
         docker_image = deployed_challenge.docker_image
         deployment_name = deployed_challenge.deployment_name
 
     # Fetch url dang co trong db
-    challenge_url = challenge.connection_info
+    challenge_url = res_data['output']
 
     return jsonify({"success": True, "message": "Challenge started", "challenge_url": challenge_url}), 200
 

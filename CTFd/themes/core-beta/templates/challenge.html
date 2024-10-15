@@ -3,9 +3,7 @@
 {% block content %}
 <div class="jumbotron">
   <div class="container">
-    <h1>
-      {% trans %}Challenges{% endtrans %}
-    </h1>
+    <h1>{% trans %}Challenges{% endtrans %}</h1>
   </div>
 </div>
 
@@ -23,74 +21,57 @@
             {% block solves %}
             <li class="nav-item">
               <button class="nav-link challenge-solves" data-bs-target="#solves" @click="showSolves()">
-                {% if solves is not none %} {{ ngettext("%(num)d Solve", "%(num)d Solves", solves|length) }} {% endif %}
+                {% if solves is not none %} 
+                  {{ ngettext("%(num)d Solve", "%(num)d Solves", solves|length) }} 
+                {% endif %}
               </button>
             </li>
+            {% endblock %}
+          </ul>
+        </div>
 
-          {% endblock %}
-        </ul>
-      </div>
-
-   
-<div class="result"></div>
+        <div class="result"></div>
         <div>
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade show active" id="challenge">
-              <h2 class="challenge-name text-center pt-3">
-                {{ challenge.name }}
-              </h2>
-              <h3 class="challenge-value text-center">
-                {{ challenge.value }}
-              </h3>
-              <h3>
-                {{challenge.connection_info}}
-              </h3>
+              <h2 class="challenge-name text-center pt-3">{{ challenge.name }}</h2>
+              <h3 class="challenge-value text-center">{{ challenge.value }}</h3>
+              <h3 class="challenge-value text-center " id="timer">{{  remaining_time_minutes }}</h3>
 
-              <!-- Điều kiện kiểm tra trạng thái `challenge.state` -->
+
+          
               {% if challenge.isStart == True %}
-              
-                <button type="submit" class="btn btn-danger">
-                  {% trans %}Stop Challenge{% endtrans %}
-                </button>
-              
-              {% elif challenge.isStart == False %}
-              <p>{% trans %}This challenge has been solved{% endtrans %}</p>
+                <button type="submit" class="btn btn-danger"  id="btn-stop">{% trans %}Stop Challenge{% endtrans %}</button>
               {% else %}
-              
-                <button type="submit" class="btn btn-success" id="btn-start">
-                  {% trans %}Start Challenge{% endtrans %}
-                </button>
-              
+                <button type="submit" class="btn btn-success" id="btn-start">{% trans %}Start Challenge{% endtrans %}</button>
               {% endif %}
 
-            {% if tags %}
+              {% if tags %}
               <div class="challenge-tags text-center pt-2 pb-3">
                 {% block tags %}
-                  {% for tag in tags %}
-                    <span class="challenge-tag badge bg-info">{{ tag }}</span>
-                  {% endfor %}
+                {% for tag in tags %}
+                  <span class="challenge-tag badge bg-info">{{ tag }}</span>
+                {% endfor %}
                 {% endblock %}
               </div>
-            {% endif %}
+              {% endif %}
 
-            <span class="challenge-desc">{% block description %}{{ challenge.html }}{% endblock %}</span>
+              <span class="challenge-desc">{% block description %}{{ challenge.html }}{% endblock %}</span>
 
-            {% if challenge.connection_info %}
+              {% if challenge.connection_info %}
               <div class="mb-2">
                 <span class="challenge-connection-info">
                   {% block connection_info %}
-                    {% set conn = challenge.connection_info %}
-                    {% if not conn %}
-                    {% elif conn.startswith("http") %}
-                      {{ conn | urlize(target="_blank") }}
-                    {% else %}
-                      <code>{{ conn }}</code>
-                    {% endif %}
+                  {% set conn = challenge.connection_info %}
+                  {% if conn.startswith("http") %}
+                    {{ conn | urlize(target="_blank") }}
+                  {% else %}
+                    <code>{{ conn }}</code>
+                  {% endif %}
                   {% endblock %}
                 </span>
-
               </div>
-
+              {% endif %}
 
               {% if hints %}
               <div class="challenge-hints hint-row row">
@@ -121,16 +102,13 @@
                   {% set segments = file.split('/') %}
                   {% set token = file.split('?') | last %}
                   {% if token %}
-                  {% set filename = segments | last | replace("?" + token, "") %}
+                    {% set filename = segments | last | replace("?" + token, "") %}
                   {% else %}
-                  {% set filename = segments | last %}
+                    {% set filename = segments | last %}
                   {% endif %}
-                  <a class="btn btn-info btn-file mb-1 d-inline-block px-2 w-100 text-truncate" href="{{ file }}"
-                    title="{{ filename }}">
+                  <a class="btn btn-info btn-file mb-1 d-inline-block px-2 w-100 text-truncate" href="{{ file }}" title="{{ filename }}">
                     <i class="fas fa-download"></i>
-                    <small>
-                      {{ filename }}
-                    </small>
+                    <small>{{ filename }}</small>
                   </a>
                 </div>
                 {% endfor %}
@@ -140,9 +118,7 @@
               {% if max_attempts > 0 %}
               <div class="row text-center">
                 <div class="col-12">
-                  <p>
-                    {{ attempts }}/{{ max_attempts }} attempt{{ max_attempts|pluralize }}
-                  </p>
+                  <p>{{ attempts }}/{{ max_attempts }} attempt{{ max_attempts|pluralize }}</p>
                 </div>
               </div>
               {% endif %}
@@ -151,15 +127,13 @@
                 <div class="col-12 col-sm-8">
                   {% block input %}
                   <input id="challenge-id" class="challenge-id" type="hidden" value="{{ challenge.id }}">
-                  <input id="challenge-input" class="challenge-input form-control" type="text" name="submission"
-                    @keyup.enter="submitChallenge()" placeholder="{% trans %}Flag{% endtrans %}" x-model="submission">
+                  <input id="challenge-input" class="challenge-input form-control" type="text" name="submission" @keyup.enter="submitChallenge()" placeholder="{% trans %}Flag{% endtrans %}" x-model="submission">
                   {% endblock %}
                 </div>
 
                 <div class="col-12 col-sm-4 mt-3 mt-sm-0 key-submit">
                   {% block submit %}
-                  <button id="challenge-submit" class="challenge-submit btn btn-outline-secondary w-100 h-100"
-                    type="submit" @click.debounce.500ms="submitChallenge()">
+                  <button id="challenge-submit" class="challenge-submit btn btn-outline-secondary w-100 h-100" type="submit" @click.debounce.500ms="submitChallenge()">
                     {% trans %}Submit{% endtrans %}
                   </button>
                   {% endblock %}
@@ -169,7 +143,6 @@
               <div class="row notification-row">
                 <div class="col-12">
                   <template x-if="response">
-                    {# This alert is re-used for all alerts, so it's important not to make it dismissble #}
                     <div :class="{
                         'alert text-center w-100 mt-3 alert-success': response.data.status == 'correct',
                         'alert text-center w-100 mt-3 alert-info': response.data.status == 'already_solved',
@@ -178,30 +151,22 @@
                       <strong x-text="response.data.message"></strong>
                       <div x-show="(response.data.status == 'correct' || response.data.status == 'already_solved')">
                         <div x-show="getNextId()">
-                          <button @click="nextChallenge()" class="btn btn-info mt-3">
-                            {% trans %}Next Challenge{% endtrans %}
-                          </button>
+                          <button @click="nextChallenge()" class="btn btn-info mt-3">{% trans %}Next Challenge{% endtrans %}</button>
                         </div>
                         {% if Configs.social_shares %}
                         <div>
-                          <button x-show="!share_url" @click="getShareUrl()" class="btn btn-sm btn-outline-info mt-3">
-                            {% trans %}Share{% endtrans %}
-                          </button>
+                          <button x-show="!share_url" @click="getShareUrl()" class="btn btn-sm btn-outline-info mt-3">{% trans %}Share{% endtrans %}</button>
                           <div class="btn-group mt-3" role="group" x-show="share_url">
-                            <button type="button" class="btn btn-sm btn-outline-secondary" @click="copyShareUrl()"
-                              data-bs-toggle="tooltip" data-bs-title="Copied!">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" @click="copyShareUrl()" data-bs-toggle="tooltip" data-bs-title="Copied!">
                               <i class="fa-solid fa-copy"></i>
                             </button>
-                            <a :href="'https://twitter.com/intent/tweet?url=' + encodeURIComponent(share_url)"
-                              role="button" class="btn btn-sm btn-outline-secondary" target="_blank">
+                            <a :href="'https://twitter.com/intent/tweet?url=' + encodeURIComponent(share_url)" role="button" class="btn btn-sm btn-outline-secondary" target="_blank">
                               <i class="fa-brands fa-twitter"></i>
                             </a>
-                            <a :href="'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(share_url)"
-                              role="button" class="btn btn-sm btn-outline-secondary" target="_blank">
+                            <a :href="'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(share_url)" role="button" class="btn btn-sm btn-outline-secondary" target="_blank">
                               <i class="fa-brands fa-facebook-f"></i>
                             </a>
-                            <a :href="'http://www.linkedin.com/shareArticle?url=' + encodeURIComponent(share_url)"
-                              role="button" class="btn btn-sm btn-outline-secondary" target="_blank">
+                            <a :href="'http://www.linkedin.com/shareArticle?url=' + encodeURIComponent(share_url)" role="button" class="btn btn-sm btn-outline-secondary" target="_blank">
                               <i class="fa-brands fa-linkedin-in"></i>
                             </a>
                           </div>
@@ -213,81 +178,57 @@
                 </div>
               </div>
             </div>
-            <div class="row notification-row">
-              <div class="col-12">
-                <template x-if="response">
-                  <div :class="{
-                        'alert text-center w-100 mt-3 alert-success': response.data.status == 'correct',
-                        'alert text-center w-100 mt-3 alert-info': response.data.status == 'already_solved',
-                        'alert text-center w-100 mt-3 alert-danger': response.data.status == 'incorrect',
-                      }" role="alert">
-                    <strong x-text="response.data.message"></strong>
-                    <div x-show="response.data.status === 'correct' || response.data.status === 'already_solved'">
-                      <button x-show="getNextId()" @click="nextChallenge()" class="btn btn-info mt-3">
-                        {% trans %}Next Challenge{% endtrans %}
-                      </button>
-                      {% if Configs.social_shares %}
-                      <div>
-                        <button x-show="!share_url" @click="getShareUrl()" class="btn btn-sm btn-outline-info mt-3">
-                          {% trans %}Share{% endtrans %}
-                        </button>
-                        <div class="btn-group mt-3" role="group" x-show="share_url">
-                          <button type="button" class="btn btn-sm btn-outline-secondary" @click="copyShareUrl()"
-                            data-bs-toggle="tooltip" data-bs-title="Copied!">
-                            <i class="fa-solid fa-copy"></i>
-                          </button>
-                          <a :href="'https://twitter.com/intent/tweet?url=' + encodeURIComponent(share_url)"
-                            role="button" class="btn btn-sm btn-outline-secondary" target="_blank">
-                            <i class="fa-brands fa-twitter"></i>
-                          </a>
-                          <a :href="'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(share_url)"
-                            role="button" class="btn btn-sm btn-outline-secondary" target="_blank">
-                            <i class="fa-brands fa-facebook-f"></i>
-                          </a>
-                          <a :href="'http://www.linkedin.com/shareArticle?url=' + encodeURIComponent(share_url)"
-                            role="button" class="btn btn-sm btn-outline-secondary" target="_blank">
-                            <i class="fa-brands fa-linkedin-in"></i>
-                          </a>
-                        </div>
-                      </div>
-                      {% endif %}
-                    </div>
-                  </div>
-                </template>
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-</div>
-{% endblock %}
 
+
+
+{% endblock %}
 {% block scripts %}
 {{ Assets.js("assets/js/challenges.js") }}
 
 <script>
-  $("#btn-start").click(()=>{
-    const api_start= "http://localhost:4000/api/v1/start_challenge/"+'{{challenge.id}}';
-    $.ajax({
-      url: api_start,
-      type: 'POST',
-      data: "JSON",
-      success: function(data) {
-        $(".result").html("<p>${data.challenge_url}</p>");
+  let timerInterval;
+  let timeLimit;
+  const user_id= '{{Session.id }}'
+
+  $("#btn-start").click(() => {
+  const api_start = "http://localhost:4000/api/v1/start_challenge/" + '{{ challenge.id }}';
+  const cstf = "{{Session.nonce}}";
+
+  $.ajax({
+    url: api_start,
+    type: 'POST',
+    data: JSON.stringify({ user_id: user_id }), // Thêm dữ liệu nếu cần
+    headers: {
+      'CSRF-Token': cstf,
+      'X-CSRF': cstf
+    },
+    xhrFields: {
+      withCredentials: true // Thêm thuộc tính này để gửi cookie cùng yêu cầu
+    },
+    contentType: "application/json", // Chỉ định loại nội dung cho yêu cầu
+    dataType: "json",
+    success: function(data) {
+      var url = document.querySelector(".challenge-connection-info").innerText;
+      if(data.challenge_url != null){
+        window.open(url,'_blank');
+        startChallenge('{{ challenge.id }}');
         
       }
-    })
+    },
+    error: function(xhr, status, error) {
+      $(".result").html("<p>Error starting challenge.</p>");
+      console.log(error); // Xem lỗi nếu có
+    }
   });
- 
-  let timerInterval; // To hold the interval reference
-  let timeLimit; // To store the remaining time in seconds
+});
 
-  const IsStart = "{{challenge.IsStart}}";
-
-  function startChallenge() {
+function startChallenge() {
     const endTime = "{{ time_limit_timestamp }}"; // Use the timestamp directly
     const currentTime = Math.floor(Date.now() / 1000);
     timeLimit = endTime - currentTime;
@@ -306,13 +247,13 @@
       } else {
         clearInterval(timerInterval); // Stop timer
         alert("Time's up!");
-        document.querySelector('.startBtn').classList.remove('d-none');
-        document.querySelector('.stopBtn').classList.add('d-none');
+        document.querySelector('#btn-start').classList.remove('d-none');
+        document.querySelector('#btn-stop').classList.add('d-none');
       }
     }, 1000); // 1 second intervals
 
-    document.querySelector('.startBtn').classList.add('d-none'); // Disable start button
-    document.querySelector('.stopBtn').classList.remove('d-none'); // Enable stop button
+    document.querySelector('#btn-start').classList.add('d-none'); // Disable start button
+    document.querySelector('#btn-stop').classList.remove('d-none'); // Enable stop button
   }
 
   function updateTimerDisplay() {
@@ -326,8 +267,8 @@
     timerInterval = null; // Clear the interval reference
     const remainingTime = "{{ remaining_time_seconds }}"; // Assuming you have this value in seconds
     document.querySelector('#timer').textContent = `Remaining Time: ${Math.floor(remainingTime / 60)}m ${remainingTime % 60 < 10 ? '0' : ''}${remainingTime % 60}s`;
-    document.querySelector('.startBtn').classList.remove('d-none'); // Re-enable start button
-    document.querySelector('.stopBtn').classList.add('d-none'); // Hide stop button
+    document.querySelector('#btn-start').classList.remove('d-none'); // Re-enable start button
+    document.querySelector('#btn-stop').classList.add('d-none'); // Hide stop button
   }
 
   function initialize(challengeId) {
@@ -335,5 +276,6 @@
       startChallenge(); // Automatically start the challenge if it has started
     }
   }
+
 </script>
 {% endblock %}
