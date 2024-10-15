@@ -69,25 +69,7 @@
 	{% endblock %}
 
 	<!-- Checkbox for Setup Docker -->
-	<div class="form-group">
-		<label>
-			<input type="checkbox" name="setup_docker" id="setup_docker" onclick="toggleDockerSetup(this)">
-			Setup Docker
-		</label>
-	</div>
 
-	<!-- Docker Setup Input -->
-	<div id="docker-setup" style="display: none;">
-		<div class="form-group">
-			<label>
-				Docker Image Name:<br>
-				<small class="form-text text-muted">
-					Enter the name of the Docker image to be used.
-				</small>
-			</label>
-			<input type="text" class="form-control" name="docker_image" placeholder="Enter Docker image name">
-		</div>
-	</div>
 
 	{% block submit %}
 	<div class="form-group">

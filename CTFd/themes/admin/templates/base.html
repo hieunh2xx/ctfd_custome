@@ -19,12 +19,12 @@
 			'userMode': "{{ Configs.user_mode or '' }}",
 			'userId': "{{ Session.id or 'null' }}",
 
-			'userName': "{ { User.name | tojson or 'null' } }",
-			'userEmail': "{ { User.email | tojson or 'null' } }",
-			'teamId': "{ { Team.id | tojson or 'null' } }",
-			'teamName': "{ { Team.name | tojson or 'null' } }",
-			'start': "{ { Configs.start | tojson or 'null' } }",
-			'end': " { { Configs.end | tojson or 'null' } }"
+			'userName': "{ { User.name  } }",
+			'userEmail': "{ { User.email } }",
+			'teamId': "{ { Team.id  }",
+			'teamName': "{ { Team.name  }",
+			'start': "{ { Configs.start  }",
+			'end': " { { Configs.end  }"
 		};
 	</script>
 	{% block stylesheets %}{% endblock %}
