@@ -76,10 +76,12 @@ def start_challenge(challenge_id):
         #     deployment_name= deployment_name
         #     )
         #db.session.add(new_deployment)
+
         challenge.connection_info = f"http://{deployment_name}.ctfd.local"
         db.session.commit()
 
         challenge_url = f"http://{deployment_name}.ctfd.local"
+
         logging.info(f"User {user_Id} started challenge {challenge_id}. Deployment created: {deployment_name}.")
 
         return jsonify({"success": True, "message": "Challenge started", "challenge_url": challenge_url}), 200
@@ -87,6 +89,7 @@ def start_challenge(challenge_id):
 #when users restart instance, uses existing one
     else:
         logging.info(f"User {user_Id} is using an existing deployment for challenge {challenge_id}.")
+
         # If already deployed, use the existing deployment
         docker_image = deployed_challenge.docker_image
         deployment_name = deployed_challenge.deployment_name

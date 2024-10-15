@@ -3,7 +3,7 @@ import os
 import sys
 import time
 import weakref
-from distutils.version import StrictVersion
+from distutils.version import StrictVersion  # type: ignore
 
 import jinja2
 from flask import Flask, Request
@@ -303,6 +303,8 @@ def create_app(config="CTFd.config.Config"):
         from CTFd.teams import teams
         from CTFd.users import users
         from CTFd.views import views
+        from CTFd.StartChallenge import challenge
+        from CTFd.SendTicket import sendticket
 
         app.register_blueprint(views)
         app.register_blueprint(teams)
@@ -313,6 +315,8 @@ def create_app(config="CTFd.config.Config"):
         app.register_blueprint(api)
         app.register_blueprint(events)
         app.register_blueprint(social)
+        app.register_blueprint(challenge)
+        app.register_blueprint(sendticket)
 
         app.register_blueprint(admin)
 

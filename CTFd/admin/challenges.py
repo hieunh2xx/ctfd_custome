@@ -74,6 +74,12 @@ def challenges_detail(challenge_id):
     )
 
 
+@admin.route("/admin/challengeFail")
+@admins_only
+def challengeFail():
+    return render_template("admin/challenges/CreateFail.html")
+
+
 @admin.route("/admin/challenges/preview/<int:challenge_id>")
 @admins_only
 def challenges_preview(challenge_id):

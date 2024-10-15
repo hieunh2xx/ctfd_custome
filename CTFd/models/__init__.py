@@ -120,6 +120,9 @@ class Challenges(db.Model):
     type = db.Column(db.String(80))
     state = db.Column(db.String(80), nullable=False, default="visible")
     requirements = db.Column(db.JSON)
+    IsStart = db.Column(db.Boolean, default=False)
+    time_limit = db.Column(db.DateTime)  # Existing column
+    require_deploy = db.Column(db.Boolean, nullable=False, default=False)
 
     files = db.relationship("ChallengeFiles", backref="challenge")
     tags = db.relationship("Tags", backref="challenge")
@@ -209,8 +212,7 @@ class Hints(db.Model):
     def __repr__(self):
         return "<Hint %r>" % self.content
 
-<<<<<<< Updated upstream
-=======
+
 class DeployedChallenge(db.Model):
     __tablename__ = 'deployed_challenge'
     id = db.Column(db.Integer, primary_key=True)
@@ -225,8 +227,6 @@ class DeployedChallenge(db.Model):
     user = db.relationship('Users', backref='deployed_challenges')
     challenge = db.relationship('Challenges', backref=db.backref('deployed_challenges', lazy=True))
 
-
->>>>>>> Stashed changes
 
 class Awards(db.Model):
     __tablename__ = "awards"

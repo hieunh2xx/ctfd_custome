@@ -275,5 +275,46 @@ Alpine.data("ChallengeBoard", () => ({
     });
   },
 }));
+function Challenge() {
+  return {
+    id: null,
+
+    startChallenge() {
+      fetch(`/challenges/${this.id}/start`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Bạn có thể bỏ qua CSRF token nếu không sử dụng Flask-WTF
+        }
+      })
+        .then(response => {
+          if (response.ok) {
+            location.reload(); // Reload lại trang để cập nhật trạng thái
+          } else {
+            console.error('Error starting challenge:', response.status, response.statusText);
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    },
+
+    stopChallenge() {
+      fetch(`/challenges/${this.id}/stop`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Bạn có thể bỏ qua CSRF token nếu không sử dụng Flask-WTF
+        }
+      })
+        .then(response => {
+          if (response.ok) {
+            location.reload(); // Reload lại trang để cập nhật trạng thái
+          } else {
+            console.error('Error stopping challenge:', response.status, response.statusText);
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+  }
+}
 
 Alpine.start();
