@@ -212,6 +212,7 @@ class Hints(db.Model):
     def __repr__(self):
         return "<Hint %r>" % self.content
 
+
 class DeployedChallenge(db.Model):
     __tablename__ = 'deployed_challenge'
     id = db.Column(db.Integer, primary_key=True)
@@ -220,8 +221,11 @@ class DeployedChallenge(db.Model):
     image_name = db.Column(db.String(255), nullable=True)
     last_update = db.Column(db.DateTime, default=db.func.now(), nullable=False)
     deployment_name = db.Column(db.String(255), nullable=True)
-    challenge = db.relationship('Challenges', backref=db.backref('deployed_challenges', lazy=True))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)  # Add user_id column
 
+    # Relationship with the User model
+    user = db.relationship('Users', backref='deployed_challenges')
+    challenge = db.relationship('Challenges', backref=db.backref('deployed_challenges', lazy=True))
 
 
 class Awards(db.Model):
